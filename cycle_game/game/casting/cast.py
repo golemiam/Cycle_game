@@ -71,15 +71,15 @@ class Cast:
         if group in self._actors:
             self._actors[group].remove(actor)
 
-class Barrier:
-    def __init__(self) -> None:
-        self.movement_list = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
-    def draw_barrier_player_1():
-        self.movement = player_one_velocity
-        previous_position = [1, 3, 5, 7, 9, 11, 13]
-        for i in range(len(self.movement_list)):
-            if player_one_velocity == movement_list[i]:
-                draw_actor(previous_position) 
-                
-    def draw_barrier_player_2():
-        pass
+# class Barrier:
+#     def __init__(self) -> None:
+#         self.movement_list = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+#     def draw_barrier_player_1():
+#         self.movement = player_one_velocity
+#         previous_position = [1, 3, 5, 7, 9, 11, 13]
+#         for i in range(len(self.movement_list)):
+#             if player_one_velocity == movement_list[i]:
+#                 draw_actor(previous_position) 
+# 
+#     def draw_barrier_player_2():
+#         pass

@@ -18,28 +18,32 @@ class KeyboardService:
             cell_size (int): The size of a cell in the display grid.
         """
         self._cell_size = cell_size
+        self._p1_dx = 0
+        self._p1_dy = 0
+        self._p2_dx = 0
+        self._p2_dy = 0
 
     def get_player1_direction(self):
         """Gets the selected direction based on the currently pressed keys.
         Returns:
             Point: The selected direction.
         """
-        dx = 0
-        dy = 0
-
         if pyray.is_key_down(pyray.KEY_A): #Left
-            dx = -1
-        
-        if pyray.is_key_down(pyray.KEY_S): #Down
-            dy = 1
-        
-        if pyray.is_key_down(pyray.KEY_D): #Right
-            dx = 1
-        
-        if pyray.is_key_down(pyray.KEY_W): #Up
-            dy = -1
+            self._p1_dx = -1
+            self._p1_dy = 0
+        elif pyray.is_key_down(pyray.KEY_S): #Down
+            self._p1_dx = 0
+            self._p1_dy = 1
+        elif pyray.is_key_down(pyray.KEY_D): #Right
+            self._p1_dx = 1
+            self._p1_dy = 0
+        elif pyray.is_key_down(pyray.KEY_W): #Up
+            self._p1_dx = 0
+            self._p1_dy = -1
+        else:
+            pass
 
-        direction = Point(dx, dy)
+        direction = Point(self._p1_dx, self._p1_dy)
         direction = direction.scale(self._cell_size)
         
         return direction
@@ -49,22 +53,22 @@ class KeyboardService:
         Returns:
             Point: The selected direction.
         """
-        dx = 0
-        dy = 0
-
         if pyray.is_key_down(pyray.KEY_J): #Left
-            dx = -1
-        
-        if pyray.is_key_down(pyray.KEY_K): #Down
-            dy = 1
-        
-        if pyray.is_key_down(pyray.KEY_L): #Right
-            dx = 1
-        
-        if pyray.is_key_down(pyray.KEY_I): #Up
-            dy = -1
+            self._p2_dx = -1
+            self._p2_dy = 0
+        elif pyray.is_key_down(pyray.KEY_K): #Down
+            self._p2_dx = 0
+            self._p2_dy = 1
+        elif pyray.is_key_down(pyray.KEY_L): #Right
+            self._p2_dx = 1
+            self._p2_dy = 0
+        elif pyray.is_key_down(pyray.KEY_I): #Up
+            self._p2_dx = 0
+            self._p2_dy = -1
+        else:
+            pass
 
-        direction = Point(dx, dy)
+        direction = Point(self._p2_dx, self._p2_dy)
         direction = direction.scale(self._cell_size)
         
         return direction

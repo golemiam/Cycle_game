@@ -1,13 +1,15 @@
 from game.shared.point import Point
-#from game.casting.artifact import Artifact
-#from game.shared.color import Color
+from game.casting.actor import Actor
+from game.shared.color import Color
 import random
 
 # Basic values for game data
 CELL_SIZE = 15
-FONT_SIZE = 15
+FONT_SIZE = 30
 COLS = 60
 ROWS = 40
+RED = Color(255, 0, 0)
+BLUE = Color(0, 0, 255)
 
 class Director():
     """A person who directs the game. 
@@ -26,7 +28,8 @@ class Director():
         """
         self._keyboard_service = keyboard_service
         self._video_service = video_service
-        self.player_score = 0
+        self.player1_score = 0
+        self.player2_score = 0
         
     def start_game(self, cast):
         """Starts the game using the given cast. Runs the main game loop.
@@ -55,13 +58,32 @@ class Director():
         Args:
             cast (Cast): The cast of actors.
         """
+        # Retrieve actor data
         p1_banner = cast.get_first_actor("p1_banner")
         p2_banner = cast.get_first_actor("p2_banner")
         player1 = cast.get_first_actor("player1")
+        p1_position = player1.get_position()
         player2 = cast.get_first_actor("player2")
+        p2_position = player2.get_position()
 
-        p1_banner.set_text(f"P1 Score: {self.player_score}")
-        p2_banner.set_text(f"P2 Score: {self.player_score}")
+        # Create barriers
+        p1_barrier = Actor()
+        p1_barrier.set_text("#")
+        p1_barrier.set_font_size(FONT_SIZE)
+        p1_barrier.set_color(RED)
+        p1_barrier.set_position(p1_position)
+        cast.add_actor("p1_barriers", p1_barrier)
+
+        p2_barrier = Actor()
+        p2_barrier.set_text("#")
+        p2_barrier.set_font_size(FONT_SIZE)
+        p2_barrier.set_color(BLUE)
+        p2_barrier.set_position(p2_position)
+        cast.add_actor("p2_barriers", p2_barrier)
+
+        # Update player scores and positions
+        p1_banner.set_text(f"P1 Score: {self.player1_score}")
+        p2_banner.set_text(f"P2 Score: {self.player2_score}")
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
         player1.move_next(max_x, max_y)

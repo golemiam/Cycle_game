@@ -5,6 +5,7 @@ import pyray
 
 # Casting Classes
 from game.casting.actor import Actor
+from game.casting.barrier import Barrier
 from game.casting.cast import Cast
 
 # Director Classes
@@ -23,8 +24,8 @@ FRAME_RATE = 12
 MAX_X = 900
 MAX_Y = 600
 CELL_SIZE = 15
-FONT_SIZE = 50
-SCORE_FONT_SIZE = 15
+FONT_SIZE = 30
+SCORE_FONT_SIZE = 20
 COLS = 60
 ROWS = 40
 CAPTION = "Cycles"
@@ -42,7 +43,7 @@ def main():
     p1_banner.set_text("")
     p1_banner.set_font_size(SCORE_FONT_SIZE)
     p1_banner.set_color(WHITE)
-    p1_banner.set_position(Point(CELL_SIZE, 0))
+    p1_banner.set_position(Point(CELL_SIZE, 5))
     cast.add_actor("p1_banner", p1_banner)
 
     # Create the banner for player 2
@@ -50,11 +51,11 @@ def main():
     p2_banner.set_text("")
     p2_banner.set_font_size(SCORE_FONT_SIZE)
     p2_banner.set_color(WHITE)
-    p2_banner.set_position(Point(CELL_SIZE, 30))
+    p2_banner.set_position(Point(800, 5))
     cast.add_actor("p2_banner", p2_banner)
 
-    # Create Players Information
-    x = int(MAX_X / 2)
+    # Create Player 1 Information
+    x = int(MAX_X / 4)
     y = int(MAX_Y / 2)
     position = Point(x, y)
 
@@ -65,6 +66,12 @@ def main():
     player1.set_color(RED)
     player1.set_position(position)
     cast.add_actor("player1", player1)
+
+    # Create Player 2 Information
+    x = int((MAX_X / 4)*3)
+    y = int(MAX_Y / 2)
+    position = Point(x, y)
+
     # Create Player 2
     player2 = Actor()
     player2.set_text("@")
