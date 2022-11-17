@@ -19,7 +19,7 @@ class KeyboardService:
         """
         self._cell_size = cell_size
 
-    def get_player_1_direction(self):
+    def get_player1_direction(self):
         """Gets the selected direction based on the currently pressed keys.
         Returns:
             Point: The selected direction.
@@ -31,20 +31,20 @@ class KeyboardService:
             dx = -1
         
         if pyray.is_key_down(pyray.KEY_S): #Down
-            dy = -1
+            dy = 1
         
         if pyray.is_key_down(pyray.KEY_D): #Right
             dx = 1
         
         if pyray.is_key_down(pyray.KEY_W): #Up
-            dy = 1
+            dy = -1
 
         direction = Point(dx, dy)
         direction = direction.scale(self._cell_size)
         
         return direction
     
-    def get_player_2_direction(self):
+    def get_player2_direction(self):
         """Gets the selected direction based on the currently pressed keys.
         Returns:
             Point: The selected direction.
@@ -56,13 +56,13 @@ class KeyboardService:
             dx = -1
         
         if pyray.is_key_down(pyray.KEY_K): #Down
-            dy = -1
+            dy = 1
         
         if pyray.is_key_down(pyray.KEY_L): #Right
             dx = 1
         
         if pyray.is_key_down(pyray.KEY_I): #Up
-            dy = 1
+            dy = -1
 
         direction = Point(dx, dy)
         direction = direction.scale(self._cell_size)

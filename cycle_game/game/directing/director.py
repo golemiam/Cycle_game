@@ -40,17 +40,40 @@ class Director():
             self._do_outputs(cast)
         self._video_service.close_window()
 
+    def _get_inputs(self, cast):
+        player1 = cast.get_first_actor("player1")
+        p1_velocity = self._keyboard_service.get_player1_direction()
+        player1.set_velocity(p1_velocity)
 
+        player2 = cast.get_first_actor("player2")
+        p2_velocity = self._keyboard_service.get_player2_direction()
+        player2.set_velocity(p2_velocity)
     
+    def _do_updates(self, cast):
+        """Updates the position's position and resolves any collisions with players/their trails.
 
+        Args:
+            cast (Cast): The cast of actors.
+        """
+        p1_banner = cast.get_first_actor("p1_banner")
+        p2_banner = cast.get_first_actor("p2_banner")
+        player1 = cast.get_first_actor("player1")
+        player2 = cast.get_first_actor("player2")
 
+        p1_banner.set_text(f"P1 Score: {self.player_score}")
+        p2_banner.set_text(f"P2 Score: {self.player_score}")
+        max_x = self._video_service.get_width()
+        max_y = self._video_service.get_height()
+        player1.move_next(max_x, max_y)
+        player2.move_next(max_x, max_y)
 
-
-
-
-
-
-    
-
-
-    
+    def _do_outputs(self, cast):
+        """Draws the actors on the screen.
+        
+        Args:
+            cast (Cast): The cast of actors.
+        """
+        self._video_service.clear_buffer()
+        actors = cast.get_all_actors()
+        self._video_service.draw_actors(actors)
+        self._video_service.flush_buffer()

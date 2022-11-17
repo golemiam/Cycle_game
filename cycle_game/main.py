@@ -2,6 +2,7 @@ import os
 import random
 import pyray
 
+
 # Casting Classes
 from game.casting.actor import Actor
 from game.casting.cast import Cast
@@ -22,30 +23,55 @@ FRAME_RATE = 12
 MAX_X = 900
 MAX_Y = 600
 CELL_SIZE = 15
-FONT_SIZE = 15
+FONT_SIZE = 50
+SCORE_FONT_SIZE = 15
 COLS = 60
 ROWS = 40
-CAPTION = "Greed"
+CAPTION = "Cycles"
 WHITE = Color(255, 255, 255)
+RED = Color(255, 0, 0)
+BLUE = Color(0, 0, 255)
 DEFAULT_ARTIFACTS = random.randint(5, 10)
 
 def main():
+    # Create the cast
     cast = Cast()
+
+    # Create the banner for player 1
+    p1_banner = Actor()
+    p1_banner.set_text("")
+    p1_banner.set_font_size(SCORE_FONT_SIZE)
+    p1_banner.set_color(WHITE)
+    p1_banner.set_position(Point(CELL_SIZE, 0))
+    cast.add_actor("p1_banner", p1_banner)
+
+    # Create the banner for player 2
+    p2_banner = Actor()
+    p2_banner.set_text("")
+    p2_banner.set_font_size(SCORE_FONT_SIZE)
+    p2_banner.set_color(WHITE)
+    p2_banner.set_position(Point(CELL_SIZE, 30))
+    cast.add_actor("p2_banner", p2_banner)
 
     # Create Players Information
     x = int(MAX_X / 2)
     y = int(MAX_Y / 2)
     position = Point(x, y)
 
-    player = Actor()
-    player.set_text("#")
-    player.set_font_size(FONT_SIZE)
-    player.set_color(WHITE)
-    player.set_position(position)
     # Create player 1
-    cast.add_actor("player1", player)
+    player1 = Actor()
+    player1.set_text("@")
+    player1.set_font_size(FONT_SIZE)
+    player1.set_color(RED)
+    player1.set_position(position)
+    cast.add_actor("player1", player1)
     # Create Player 2
-    cast.add_actor("player2", player)
+    player2 = Actor()
+    player2.set_text("@")
+    player2.set_font_size(FONT_SIZE)
+    player2.set_color(BLUE)
+    player2.set_position(position)
+    cast.add_actor("player2", player2)
 
     # Initialize Video Service
     keyboard_service = KeyboardService(CELL_SIZE)
