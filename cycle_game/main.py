@@ -5,7 +5,6 @@ import pyray
 
 # Casting Classes
 from game.casting.actor import Actor
-from game.casting.barrier import Barrier
 from game.casting.cast import Cast
 
 # Director Classes
@@ -81,11 +80,12 @@ def main():
     cast.add_actor("player2", player2)
 
     # Initialize Video Service
+    
     keyboard_service = KeyboardService(CELL_SIZE)
     video_service = VideoService(CAPTION, MAX_X, MAX_Y, CELL_SIZE, FRAME_RATE)
     director = Director(keyboard_service, video_service)
     director.start_game(cast)
-
+    
 if __name__ == "__main__":
     main()
 

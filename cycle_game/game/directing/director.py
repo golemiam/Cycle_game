@@ -89,6 +89,22 @@ class Director():
         player1.move_next(max_x, max_y)
         player2.move_next(max_x, max_y)
 
+       #Handling Collilions
+       
+       ##Header Collisions
+        if(player1.get_position().equals(player2.get_position())):
+            print("Heads Colliding")
+       
+       
+        ##Cutting Segments 
+        if(player1.check_segment_collision(player2)):
+            print('Player 2 cut Player 1')
+        
+          
+        if(player2.check_segment_collision(player1)):
+            print('Player 1 cut Player 2')
+            
+        
     def _do_outputs(self, cast):
         """Draws the actors on the screen.
         
