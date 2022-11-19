@@ -83,7 +83,7 @@ def main():
     
     keyboard_service = KeyboardService(CELL_SIZE)
     video_service = VideoService(CAPTION, MAX_X, MAX_Y, CELL_SIZE, FRAME_RATE)
-    director = Director(keyboard_service, video_service)
+    director = Director(keyboard_service, video_service, 0, 0)
     director.start_game(cast)
     
 if __name__ == "__main__":
