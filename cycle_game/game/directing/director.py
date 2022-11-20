@@ -2,6 +2,7 @@ from game.shared.point import Point
 from game.casting.actor import Actor
 from game.shared.color import Color
 import random
+import pyray
 
 # Basic values for game data
 CELL_SIZE = 15
@@ -20,7 +21,7 @@ class Director():
         _keyboard_service (KeyboardService): For getting directional input.
         _video_service (VideoService): For providing video output.
     """
-    def __init__(self, keyboard_service, video_service):
+    def __init__(self, keyboard_service, video_service, player1_score, player2_score):
         """Constructs a new Director using the specified keyboard and video services.
         
         Args:
@@ -29,8 +30,9 @@ class Director():
         """
         self._keyboard_service = keyboard_service
         self._video_service = video_service
-        self.player1_score = 0
-        self.player2_score = 0
+        self.player1_score = player1_score
+        self.player2_score = player2_score
+        self.game_state = True
         
     def start_game(self, cast):
         """Starts the game using the given cast. Runs the main game loop.
@@ -113,8 +115,7 @@ class Director():
        #Handling Collilions
        
        ##Header Collisions
-        if(player1.get_position().equals(player2.get_position())):
-            print("Heads Colliding")
+        if(player1.get_position().equals(player2.get_position()) and self.game_state):
             player1.set_color(WHITE)
             player2.set_color(WHITE)
             self.player1_score += 1
@@ -126,10 +127,10 @@ class Director():
             player1.set_color(RED)
             player2.set_color(BLUE)
        
+            self._handle_game_over("truce", cast)
        
         ##Cutting Segments 
-        if(player1.check_segment_collision(player2)):
-            print('Player 2 cut Player 1')
+        if(player1.check_segment_collision(player2) and self.game_state):
             player1.set_color(WHITE)
             self.player2_score += 1
             player1.reset_segments()
@@ -138,9 +139,13 @@ class Director():
             cast.reset_actors("p2_barriers")
             player1.set_color(RED)
         
+            self.player2_score+=1
+            self._handle_game_over("player_two", cast)
           
-        if(player2.check_segment_collision(player1)):
-            print('Player 1 cut Player 2')
+        if(player2.check_segment_collision(player1) and self.game_state):
+           
+            self.player1_score+=1
+            self._handle_game_over("player_one", cast)
             player2.set_color(WHITE)
             self.player1_score += 1
             player1.reset_segments()
@@ -160,3 +165,35 @@ class Director():
         actors = cast.get_all_actors()
         self._video_service.draw_actors(actors)
         self._video_service.flush_buffer()
+        
+    def _handle_points(self, actor_points):
+        if(self.game_state):
+            actor_points+=1
+    
+    def _handle_game_over(self, collitionSituation, cast):
+        if(self.game_state==True):
+            self.game_state = False
+            x = int(900/2)
+            y = int(600/2)
+            position = Point(x-100,y)
+            secondary_position = Point(x-350,y+100)
+            
+            message = Actor()
+            secondary_message = Actor()
+            secondary_message.set_text("Press Enter to Keep Playing!!!\nPress P Play Again!!!")
+            
+            if(collitionSituation=="truce"):
+                message.set_text("Game Over!!!")
+            elif(collitionSituation=="player_one"):
+                message.set_text("Player One Won!!!")
+            else:
+                message.set_text("Player 2 Won!!!")
+                
+            message.set_position(position)
+            secondary_message.set_position(secondary_position)
+            
+            cast.add_actor("messages", message)
+            cast.add_actor("messages", secondary_message)
+            
+            self._keyboard_service.get_end_game(self.game_state)
+            

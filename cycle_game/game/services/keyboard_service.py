@@ -83,3 +83,8 @@ class KeyboardService:
 
         direction = Point(dx, dy)
         return direction
+    
+    def get_end_game(self, status):
+        if (status == False):
+            if(pyray.is_key_down(pyray.KEY_L)):
+                print("pressed")
