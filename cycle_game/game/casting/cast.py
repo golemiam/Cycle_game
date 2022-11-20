@@ -70,6 +70,15 @@ class Cast:
         """
         if group in self._actors:
             self._actors[group].remove(actor)
+    
+    def reset_actors(self, group):
+        """Removes all actors from a given group.
+        
+        Args:
+            group (string): The name of the group.
+        """
+        if group in self._actors:
+            self._actors[group] = []
 
 # class Barrier:
 #     def __init__(self) -> None:

@@ -8,6 +8,7 @@ CELL_SIZE = 15
 FONT_SIZE = 30
 COLS = 60
 ROWS = 40
+WHITE = Color(255, 255, 255)
 RED = Color(255, 0, 0)
 BLUE = Color(0, 0, 255)
 
@@ -41,6 +42,26 @@ class Director():
             self._get_inputs(cast)
             self._do_updates(cast)
             self._do_outputs(cast)
+            if self.player1_score == 10:
+                print("Player 1 wins!")
+                restart = input("Play Again? yes/no")
+                if restart.lower() == 'yes':
+                    self.player1_score = 0
+                    self.player2_score = 0
+                    self.start_game(cast)
+                else:
+                    print("Thanks for playing!")
+                    self._video_service.close_window()
+            elif self.player2_score == 10:
+                print("Player 2 wins!")
+                restart = input("Play Again?")
+                if restart.lower() == 'yes':
+                    self.player1_score = 0
+                    self.player2_score = 0
+                    self.start_game(cast)
+                else:
+                    print("Thanks for playing!")
+                    self._video_service.close_window()
         self._video_service.close_window()
 
     def _get_inputs(self, cast):
@@ -94,15 +115,39 @@ class Director():
        ##Header Collisions
         if(player1.get_position().equals(player2.get_position())):
             print("Heads Colliding")
+            player1.set_color(WHITE)
+            player2.set_color(WHITE)
+            self.player1_score += 1
+            self.player2_score += 1
+            player1.reset_segments()
+            cast.reset_actors("p1_barriers")
+            player2.reset_segments()
+            cast.reset_actors("p2_barriers")
+            player1.set_color(RED)
+            player2.set_color(BLUE)
        
        
         ##Cutting Segments 
         if(player1.check_segment_collision(player2)):
             print('Player 2 cut Player 1')
+            player1.set_color(WHITE)
+            self.player2_score += 1
+            player1.reset_segments()
+            cast.reset_actors("p1_barriers")
+            player2.reset_segments()
+            cast.reset_actors("p2_barriers")
+            player1.set_color(RED)
         
           
         if(player2.check_segment_collision(player1)):
             print('Player 1 cut Player 2')
+            player2.set_color(WHITE)
+            self.player1_score += 1
+            player1.reset_segments()
+            cast.reset_actors("p1_barriers")
+            player2.reset_segments()
+            cast.reset_actors("p2_barriers")
+            player2.set_color(BLUE)
             
         
     def _do_outputs(self, cast):

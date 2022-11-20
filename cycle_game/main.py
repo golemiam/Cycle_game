@@ -50,7 +50,7 @@ def main():
     p2_banner.set_text("")
     p2_banner.set_font_size(SCORE_FONT_SIZE)
     p2_banner.set_color(WHITE)
-    p2_banner.set_position(Point(800, 5))
+    p2_banner.set_position(Point(765, 5))
     cast.add_actor("p2_banner", p2_banner)
 
     # Create Player 1 Information
