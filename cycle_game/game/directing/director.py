@@ -44,7 +44,7 @@ class Director():
             self._get_inputs(cast)
             self._do_updates(cast)
             self._do_outputs(cast)
-            if (self.player1_score == self.player2_score) == 10:
+            if (self.player1_score and self.player2_score) == 10:
                 print("Draw!")
                 restart = input("Play Again? yes/no\n")
                 if restart.lower() == 'yes':
@@ -142,7 +142,7 @@ class Director():
         ##Cutting Segments 
         if(player1.check_segment_collision(player2)):
             player1.set_color(WHITE)
-            self.player2_score += 1
+            self.player1_score += 1
             player1.reset_segments()
             cast.reset_actors("p1_barriers")
             player2.reset_segments()
@@ -150,7 +150,7 @@ class Director():
             player1.set_color(RED)
           
         if(player2.check_segment_collision(player1)):
-            self.player1_score += 1
+            self.player2_score += 1
             player2.set_color(WHITE)
             player1.reset_segments()
             cast.reset_actors("p1_barriers")
