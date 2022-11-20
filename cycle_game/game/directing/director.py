@@ -44,9 +44,20 @@ class Director():
             self._get_inputs(cast)
             self._do_updates(cast)
             self._do_outputs(cast)
-            if self.player1_score == 10:
+            if (self.player1_score == self.player2_score) == 10:
+                print("Draw!")
+                restart = input("Play Again? yes/no\n")
+                if restart.lower() == 'yes':
+                    self.player1_score = 0
+                    self.player2_score = 0
+                    self.start_game(cast)
+                else:
+                    print("Thanks for playing!")
+                    self._video_service.close_window()
+            elif self.player1_score == 10:
+                #self._handle_game_over("player_one", cast)
                 print("Player 1 wins!")
-                restart = input("Play Again? yes/no")
+                restart = input("Play Again? yes/no\n")
                 if restart.lower() == 'yes':
                     self.player1_score = 0
                     self.player2_score = 0
@@ -55,8 +66,9 @@ class Director():
                     print("Thanks for playing!")
                     self._video_service.close_window()
             elif self.player2_score == 10:
+                #self._handle_game_over("player_two", cast)
                 print("Player 2 wins!")
-                restart = input("Play Again?")
+                restart = input("Play Again? yes/no\n")
                 if restart.lower() == 'yes':
                     self.player1_score = 0
                     self.player2_score = 0
@@ -115,7 +127,7 @@ class Director():
        #Handling Collilions
        
        ##Header Collisions
-        if(player1.get_position().equals(player2.get_position()) and self.game_state):
+        if(player1.get_position().equals(player2.get_position())):
             player1.set_color(WHITE)
             player2.set_color(WHITE)
             self.player1_score += 1
@@ -126,11 +138,9 @@ class Director():
             cast.reset_actors("p2_barriers")
             player1.set_color(RED)
             player2.set_color(BLUE)
-       
-            self._handle_game_over("truce", cast)
        
         ##Cutting Segments 
-        if(player1.check_segment_collision(player2) and self.game_state):
+        if(player1.check_segment_collision(player2)):
             player1.set_color(WHITE)
             self.player2_score += 1
             player1.reset_segments()
@@ -138,22 +148,15 @@ class Director():
             player2.reset_segments()
             cast.reset_actors("p2_barriers")
             player1.set_color(RED)
-        
-            self.player2_score+=1
-            self._handle_game_over("player_two", cast)
           
-        if(player2.check_segment_collision(player1) and self.game_state):
-           
-            self.player1_score+=1
-            self._handle_game_over("player_one", cast)
-            player2.set_color(WHITE)
+        if(player2.check_segment_collision(player1)):
             self.player1_score += 1
+            player2.set_color(WHITE)
             player1.reset_segments()
             cast.reset_actors("p1_barriers")
             player2.reset_segments()
             cast.reset_actors("p2_barriers")
             player2.set_color(BLUE)
-            
         
     def _do_outputs(self, cast):
         """Draws the actors on the screen.
@@ -165,35 +168,31 @@ class Director():
         actors = cast.get_all_actors()
         self._video_service.draw_actors(actors)
         self._video_service.flush_buffer()
-        
-    def _handle_points(self, actor_points):
-        if(self.game_state):
-            actor_points+=1
     
-    def _handle_game_over(self, collitionSituation, cast):
-        if(self.game_state==True):
-            self.game_state = False
-            x = int(900/2)
-            y = int(600/2)
-            position = Point(x-100,y)
-            secondary_position = Point(x-350,y+100)
-            
-            message = Actor()
-            secondary_message = Actor()
-            secondary_message.set_text("Press Enter to Keep Playing!!!\nPress P Play Again!!!")
-            
-            if(collitionSituation=="truce"):
-                message.set_text("Game Over!!!")
-            elif(collitionSituation=="player_one"):
-                message.set_text("Player One Won!!!")
-            else:
-                message.set_text("Player 2 Won!!!")
-                
-            message.set_position(position)
-            secondary_message.set_position(secondary_position)
-            
-            cast.add_actor("messages", message)
-            cast.add_actor("messages", secondary_message)
-            
-            self._keyboard_service.get_end_game(self.game_state)
+#    def _handle_game_over(self, collitionSituation, cast):
+#        if(self.game_state==True):
+#            self.game_state = False
+#            x = int(900/2)
+#            y = int(600/2)
+#            position = Point(x-100,y)
+#            secondary_position = Point(x-350,y+100)
+#            
+#            message = Actor()
+#            secondary_message = Actor()
+#            secondary_message.set_text("Press Enter to Keep Playing!!!\nPress P Play Again!!!")
+#            
+#            if(collitionSituation=="truce"):
+#                message.set_text("Game Over!!!")
+#            elif(collitionSituation=="player_one"):
+#                message.set_text("Player One Won!!!")
+#            else:
+#                message.set_text("Player Two Won!!!")
+#                
+#            message.set_position(position)
+#            secondary_message.set_position(secondary_position)
+#            
+#            cast.add_actor("messages", message)
+#            cast.add_actor("messages", secondary_message)
+#            
+#            self._keyboard_service.get_end_game(self.game_state)
             
